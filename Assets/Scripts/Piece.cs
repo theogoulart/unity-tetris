@@ -23,8 +23,8 @@ public class Piece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Fall();
         OnInput();
+        Fall();
     }
 
     void OnInput()
@@ -33,23 +33,26 @@ public class Piece : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.E)) {
-            if (IsRotationValid()) {
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q)) {
+            if (IsRotationValid(Input.GetKeyDown(KeyCode.E))) {
                 transform.RotateAround(transform.position, Vector3.forward, 90f);
                 UpdatePieceInGrid();
             }
         }
 
-        Vector3 direction = Vector3.zero;
+        Vector2 direction = Vector2.zero;
         if (Input.GetKeyDown(KeyCode.A)) {
-            direction = Vector3.left;
+            direction = Vector2.left;
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-            direction = Vector3.right;
+            direction = Vector2.right;
         }
 
-        Move(direction);
+        bool isMoveValid = IsMoveValid(direction);
+        if (isMoveValid) {
+            Move(direction);
+        }
     }
 
     void Fall()
@@ -57,7 +60,7 @@ public class Piece : MonoBehaviour
         _timer += Time.deltaTime;
 
         if (_timer >= (Input.GetKeyDown(KeyCode.S) ? fallTime/10 : fallTime)) {
-            bool isMoveValid = IsMoveValid(Vector3.down);
+            bool isMoveValid = IsMoveValid(Vector2.down);
             if (!isMoveValid) {
                 if (!_isDisabled) {
                     _isDisabled = true;
@@ -65,16 +68,16 @@ public class Piece : MonoBehaviour
                 }
                 return;
             }
-            Move(Vector3.down);
+            Move(Vector2.down);
             _timer = 0;
         }
     }
 
-    bool IsMoveValid(Vector3 direction)
+    bool IsMoveValid(Vector2 direction)
     {
         foreach (Block block in _blocks)
         {
-            if (!block.IsNextPosValid(direction)) {
+            if (!block.IsNextPosValid(block.gridPos + direction)) {
                 return false;
             }
         }
@@ -82,11 +85,11 @@ public class Piece : MonoBehaviour
         return true;
     }
 
-    bool IsRotationValid()
+    bool IsRotationValid(bool isClockWiseRotation)
     {
         foreach (Block block in _blocks)
         {
-            if (!block.IsRotationAllowed(pivot)) {
+            if (!block.IsRotationAllowed(pivot, isClockWiseRotation)) {
                 return false;
             }
         }
@@ -94,8 +97,8 @@ public class Piece : MonoBehaviour
         return true;
     }
 
-    void Move(Vector3 direction) {
-        transform.position += direction;
+    void Move(Vector2 direction) {
+        transform.position += (Vector3) direction;
         UpdatePieceInGrid();
     }
 

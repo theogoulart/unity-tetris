@@ -5,21 +5,29 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    private Vector2 gridPos;
+    public Vector2 gridPos;
 
     private void Start() {
         gridPos = new Vector2((int)transform.position.x, (int)transform.position.y);
     }
 
-    public bool IsRotationAllowed(Block pivot)
+    public bool IsRotationAllowed(Block pivot, bool isClockWiseRotation)
     {
-        Debug.Log(pivot.name);
-        return true;
+        float distX = transform.position.x - pivot.transform.position.x;
+        float distY = transform.position.y - pivot.transform.position.y;
+        int xMtplr = isClockWiseRotation ? -1 : 1;
+        int yMtplr = isClockWiseRotation ? 1 : -1;
+
+        Vector2 nextPos = new Vector2(
+            (float)Math.Floor(yMtplr * distY + pivot.transform.position.x),
+            (float)Math.Floor(xMtplr * distX + pivot.transform.position.y)
+        );
+
+        return IsNextPosValid(nextPos);
     }
 
-    public bool IsNextPosValid(Vector2 direction)
+    public bool IsNextPosValid(Vector2 nextPos)
     {
-        Vector2 nextPos = gridPos + direction;
         if ((int) nextPos.x < 0 || (int) nextPos.x >= Grid.width) {
             return false;
         }
@@ -38,9 +46,6 @@ public class Block : MonoBehaviour
 
     public void RemoveGridPosition()
     {
-        Debug.Log("---");
-        Debug.Log((int)gridPos.y);
-        Debug.Log((int)gridPos.x);
         Grid.grid[(int)gridPos.y, (int)gridPos.x] = null;
     }
 
