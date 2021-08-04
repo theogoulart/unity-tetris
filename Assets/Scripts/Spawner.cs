@@ -7,10 +7,13 @@ public class Spawner : MonoBehaviour
     public static Spawner instance;
     public List<GameObject> piecePrefabs;
 
-    // Start is called before the first frame update
+    void Awake() {
+        instance = this;   
+    }
+
     void Start()
     {
-        instance = this;
+        Spawn();
     }
 
     public void Spawn()

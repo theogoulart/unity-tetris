@@ -44,4 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   piecePrefabs:
-  - {fileID: 0}
+  - {fileID: 6588633971488159733, guid: a070964a0ae111c42ab3ec9450b637c8, type: 3}
+  - {fileID: 4663979699160800966, guid: 462ff8c79d3040e43acc02480a6bf3a8, type: 3}
+  - {fileID: 249240362455474601, guid: e4c765db57a7a81418c6d97e7c2d8040, type: 3}
+  - {fileID: 9187422101419090137, guid: 986aad4d8dde5bc4fb1e53504b287429, type: 3}
+  - {fileID: 3989166668977368414, guid: 48e942f0da391ea48842e3f5b13f6d55, type: 3}
+  - {fileID: 843059328114280906, guid: bdd5c130eeb21b84f9501c3d5d41f12d, type: 3}
+  - {fileID: 8581641433053572725, guid: 93f115cf0c9ff1e4b850ea0701247eb3, type: 3}

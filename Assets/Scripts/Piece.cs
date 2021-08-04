@@ -6,13 +6,14 @@ public class Piece : MonoBehaviour
 {
     private Block[] _blocks;
     private float _timer;
+    private float _localFalltime;
     private bool _isDisabled;
     public Block pivot;
-    public float fallTime;
 
     // Start is called before the first frame update
     void Start()
     {
+        _localFalltime = GameManager.instance.fallTime;
         _blocks = new Block[transform.childCount];
         for (int i=0; i<_blocks.Length ; i++)
         {
@@ -58,14 +59,16 @@ public class Piece : MonoBehaviour
     void Fall()
     {
         _timer += Time.deltaTime;
-
-        if (_timer >= (Input.GetKeyDown(KeyCode.S) ? fallTime/10 : fallTime)) {
+        if (_timer >= (Input.GetKeyDown(KeyCode.S) ?
+        _localFalltime/10 : _localFalltime)) {
             bool isMoveValid = IsMoveValid(Vector2.down);
             if (!isMoveValid) {
                 if (!_isDisabled) {
                     _isDisabled = true;
+                    _localFalltime = _localFalltime/10;
                     Spawner.instance.Spawn();
                 }
+                GameManager.instance.CheckGame();
                 return;
             }
             Move(Vector2.down);
@@ -77,6 +80,10 @@ public class Piece : MonoBehaviour
     {
         foreach (Block block in _blocks)
         {
+            if (block == null) {
+                continue;
+            }
+
             if (!block.IsNextPosValid(block.gridPos + direction)) {
                 return false;
             }
@@ -87,8 +94,16 @@ public class Piece : MonoBehaviour
 
     bool IsRotationValid(bool isClockWiseRotation)
     {
+        if (pivot == null) {
+            return false;
+        }
+
         foreach (Block block in _blocks)
         {
+            if (block == null) {
+                continue;
+            }
+
             if (!block.IsRotationAllowed(pivot, isClockWiseRotation)) {
                 return false;
             }
@@ -106,11 +121,19 @@ public class Piece : MonoBehaviour
     {
         foreach (Block block in _blocks)
         {
+            if (block == null) {
+                continue;
+            }
+
             block.RemoveGridPosition();
         }
 
         foreach (Block block in _blocks)
         {
+            if (block == null) {
+                continue;
+            }
+
             block.UpdateGridPosition();
         }
     }
