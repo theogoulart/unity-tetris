@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public void CheckGame()
     {
         Time.timeScale = 0;
-        Grid.DeleteRows();
+        GridScript.DeleteRows();
         Time.timeScale = 1;
     }
 }

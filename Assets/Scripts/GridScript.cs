@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class GridScript : MonoBehaviour
 {
     public static int width = 10;
-    public static int height = 20;
+    public static int height = 27;
+    public static int maxHeight = 20;
     public static Transform[,] grid = new Transform[height, width];
 
     public static void DeleteRows()

@@ -28,7 +28,7 @@ public class Block : MonoBehaviour
 
     public bool IsNextPosValid(Vector2 nextPos)
     {
-        if ((int) nextPos.x < 0 || (int) nextPos.x >= Grid.width) {
+        if ((int) nextPos.x < 0 || (int) nextPos.x >= GridScript.width) {
             return false;
         }
 
@@ -36,7 +36,7 @@ public class Block : MonoBehaviour
             return false;
         }
 
-        Transform cell = Grid.grid[(int)nextPos.y, (int)nextPos.x];
+        Transform cell = GridScript.grid[(int)nextPos.y, (int)nextPos.x];
         if (cell != null && cell.parent != transform.parent) {
             return false;
         }
@@ -46,7 +46,7 @@ public class Block : MonoBehaviour
 
     public void RemoveGridPosition()
     {
-        Grid.grid[(int)gridPos.y, (int)gridPos.x] = null;
+        GridScript.grid[(int)gridPos.y, (int)gridPos.x] = null;
     }
 
     public void UpdateGridPosition()
@@ -55,6 +55,6 @@ public class Block : MonoBehaviour
         int yPos = (int)transform.position.y;
 
         gridPos = new Vector2(xPos, yPos);
-        Grid.grid[yPos, xPos] = transform;
+        GridScript.grid[yPos, xPos] = transform;
     }
 }
